@@ -19,7 +19,6 @@ namespace DynamicSun
             Configuration = configuration;
         }
 
-
         public void ConfigureServices(IServiceCollection services)
         {
             Configuration.Bind("Project", new Config());
@@ -27,7 +26,6 @@ namespace DynamicSun
             services.AddDbContext<AppDbContext>(x => x.UseSqlServer(Config.ConnectionString));
             services.AddRazorPages();
             services.AddMvc();
-            services.AddControllersWithViews(); //?????????????
             services.AddTransient<DataManager>();
         }
 
@@ -38,8 +36,6 @@ namespace DynamicSun
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
             }
-
-            //app.UseMvcWithDefaultRoute(); //если не указан контроллер и вид, то по умолчанию будет юзаться урл по умолчанию
 
             app.UseStaticFiles();
             app.UseRouting();

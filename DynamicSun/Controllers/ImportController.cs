@@ -47,7 +47,6 @@ namespace DynamicSun.Controllers
                 {
                     postedFile.CopyTo(stream);
                     uploadedFiles.Add(fileName);
-                    ViewBag.Message += string.Format("<b>{0}</b> uploaded.<br />", fileName);
                 }
             }
 

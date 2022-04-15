@@ -37,7 +37,7 @@ namespace DynamicSun.Controllers
             }
             else
             {
-                itemsPerPages = dataManager.Weathers.GetWeathers().OrderBy(x => x.Date).Skip((page - 1) * pageSize).Take(pageSize); //надо ToList() ???????
+                itemsPerPages = dataManager.Weathers.GetWeathers().OrderBy(x => x.Date).Skip((page - 1) * pageSize).Take(pageSize);
                 pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = dataManager.Weathers.GetWeathers().Count() };
             }
             GetViewModel ivm = new GetViewModel { PageInfo = pageInfo, Weathers = itemsPerPages };
