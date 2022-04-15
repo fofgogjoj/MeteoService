@@ -1,0 +1,36 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    @await Html.PartialAsync("MetatagsPartial")
+    @await Html.PartialAsync("CssPartial")
+</head>
+<body class="landing is-preload">
+    <div id="page-wrapper">
+
+        <!-- Banner -->
+        @await Html.PartialAsync("BannerPartial")
+
+
+        <!-- Main -->
+        <section id="main" class="container">
+            <section class="box special">
+                <header class="major">
+                    <h2>
+                        @RenderBody()
+                    </h2>
+                    <p>
+                        Погода в Москве на сегодня предоставлена исключительно для личного некоммерческого использования.<br />                     
+                        Архив погодных условий в Москве на сегодня подготовлен НПЦ «Компания Нэйм».
+                    </p>
+                </header>
+            </section>
+        </section>
+
+        <!-- Footer -->
+        @await Html.PartialAsync("FooterPartial")
+    </div>
+
+    <!-- Scripts -->
+    @await Html.PartialAsync("ScriptsPartial")
+</body>
+</html>

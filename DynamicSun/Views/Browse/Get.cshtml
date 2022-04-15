@@ -1,0 +1,62 @@
+﻿@using DynamicSun.Data.Models.Domain
+@model DynamicSun.Data.Models.View.GetViewModel
+@{
+
+    PageInfo pager = new PageInfo();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.PageNumber;
+    }
+
+
+}
+
+<div>
+    <h1>Просмотр архивов погодных условий в городе Москве</h1>
+<form method="get" name="filterForm">
+    <div class="form-inline">
+        <label class="control-label">Год: </label>
+       @Html.DropDownListFor(n => n.SelectedYear,  Model.Years, "Не выбрано", new { @onchange = @"form.submit(); ", @class = "form-control"})
+        <label class="control-label">Месяц: </label>
+       @Html.DropDownListFor(n => n.SelectedMonth,  Model.Months, "Не выбрано", new { @onchange = @"form.submit(); ", @class = "form-control"})
+    </div>
+</form>
+    @if (Model.Weathers.Any())
+    {
+        <table>
+            <tr>
+                <th>Дата</th>
+                <th>Температура</th>
+                <th>Влажность воздуха</th>
+                <th>Td</th>
+                <th>Атмосферное давление</th>
+                <th>Направление ветра</th>
+                <th>Скорость ветра</th>
+                <th>Облачность</th>
+                <th>h</th>
+                <th>VV</th>
+                <th>Погодные явления</th>
+            </tr>
+            @foreach (WeatherEntity entity in Model.Weathers)
+            {
+                //<a asp-area="" asp-controller="Home" asp-action="Get" asp-route-id="@entity.Id">   </a>
+                <tr>
+                    <td>@entity.Date</td>
+                    <td>@entity.Temperature</td>
+                    <td>@entity.Air</td>
+                    <td>@entity.Td</td>
+                    <td>@entity.AtmPressure</td>
+                    <td>@entity.Direction</td>
+                    <td>@entity.Speed</td>
+                    <td>@entity.Cloudiness</td>
+                    <td>@entity.H</td>
+                    <td>@entity.VV</td>
+                    <td>@entity.Description</td>
+                </tr>
+            }
+        </table>
+        @await Html.PartialAsync("PagerPartial")
+    }
+</div>

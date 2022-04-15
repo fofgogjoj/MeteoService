@@ -1,0 +1,12 @@
+﻿@{
+    var id = ViewContext.RouteData.Values["controller"];
+ }
+<section id="banner">
+    <h2>@Config.CompanyName</h2>
+    <p>Будь в курсе погоды.</p>
+    <ul class="actions special">
+        <li><a class="button @(id.ToString() == "Home" ? "primary" : "")" asp-controller="Home" asp-action="Index">Главная</a></li>
+        <li><a class="button @(id.ToString() == "Browse" ? "primary" : "")" asp-controller="Browse" asp-action="Get">Просмотр</a></li>
+        <li><a class="button @(id.ToString() == "Import" ? "primary" : "")" asp-controller="Import" asp-action="Index">Импорт</a></li>
+    </ul>
+</section>

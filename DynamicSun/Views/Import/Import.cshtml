@@ -1,0 +1,8 @@
+﻿@model DynamicSun.Data.Models.View.ImportViewModel
+<div>
+    <h1>@Model.Message</h1>
+    @if (Model.RowsCount > 0)
+    {
+        <h4>Количество импортированных строк: @Model.RowsCount</h4>
+    }
+</div>

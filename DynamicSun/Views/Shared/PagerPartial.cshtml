@@ -1,0 +1,28 @@
+﻿@model DynamicSun.Data.Models.View.GetViewModel
+<div class="container">
+    @if (Model.PageInfo.TotalPages > 0)
+    {
+        <form method="get">
+        <ul class="pagination pagination-lg justify-contend-center">
+            @if (Model.PageInfo.PageNumber > Model.PageInfo.StartPage)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Browse" asp-action="Get" asp-route-page="@(Model.PageInfo.StartPage)" asp-route-selectedYear="@ViewBag.selectedYears" asp-route-selectedMonth="@ViewBag.selectedMonths">Начало</a>
+                </li>
+            }
+            @for (var pge = Model.PageInfo.FirstPageToDisplay; pge <= Model.PageInfo.FirstPageToDisplay + Model.PageInfo.MaximumPageNumbersToDisplay-1; pge++)
+            {
+                <li class="page-item @(pge == Model.PageInfo.PageNumber ? "active" : "")">
+                    <a class="page-link" asp-controller="Browse" asp-action="Get" asp-route-page="@pge" asp-route-selectedYear="@ViewBag.selectedYears" asp-route-selectedMonth="@ViewBag.selectedMonths">@pge</a>
+                </li>
+            }
+            @if (Model.PageInfo.PageNumber < Model.PageInfo.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-controller="Browse" asp-action="Get" asp-route-page="@(Model.PageInfo.TotalPages)" asp-route-selectedYear="@ViewBag.selectedYears" asp-route-selectedMonth="@ViewBag.selectedMonths">Конец</a>
+                </li>
+            }
+        </ul>
+       </form>
+    }
+</div>

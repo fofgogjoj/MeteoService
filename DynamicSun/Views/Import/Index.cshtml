@@ -1,0 +1,12 @@
+﻿<div>
+        <h1>Импорт в базу данных</h1>
+    @using (Html.BeginForm("Import", "Import", FormMethod.Post, new { enctype = "multipart/form-data", id = "frm-excel", onsubmit="document.getElementById('importButton').disabled=true;" }))
+    {
+    <div class="form-inline">
+        <h4>Загрузите свой Excel-файл с расширениями .xls .xlsl для актуализации базы данных архивов погодных условий в городе Москве.</h4>
+        <input type="file" name="fileExcel" id="fileExcel" multiple />
+        <input type="submit" id="importButton" value="Загрузить"/>
+        <span style="color:green">@Html.Raw(ViewBag.Message)</span>
+    </div>
+    }
+</div>
