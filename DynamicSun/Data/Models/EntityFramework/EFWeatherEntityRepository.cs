@@ -24,19 +24,18 @@ namespace DynamicSun.Data.Models.EntityFramework
         }
         public IQueryable<WeatherEntity> GetWeatherByYear(int year)
         {
-            DateTime dateBegin = Convert.ToDateTime(year + "-01-01 00:00:00.0000000");
-            DateTime dateEnd = Convert.ToDateTime(year + "-12-31 23:59:59.9999999");
-            return context.WeatherEntities.Where(x => x.Date >= dateBegin && x.Date <= dateEnd);
+            DateTime dateBegin = new DateTime(year, 1, 1);
+            DateTime dateEnd = new DateTime(year + 1, 1, 1);
+            return context.WeatherEntities.Where(x => x.Date >= dateBegin && x.Date < dateEnd);
         }
         public IQueryable<WeatherEntity> GetWeatherByMonth(int year, int month)
         {
-            string dateEndpart = string.Empty;
+            DateTime dateEnd = new DateTime();
             if (month == 12)
-                dateEndpart = (year + 1) + "-" + 1;
+                dateEnd = new DateTime(year + 1, 1, 1);
             else
-                dateEndpart = year + "-" + (month + 1);
-            DateTime dateBegin = Convert.ToDateTime(year + "-" + month + "-01 00:00:00.0000000");
-            DateTime dateEnd = Convert.ToDateTime(dateEndpart + "-01 00:00:00.0000000");
+                dateEnd = new DateTime(year, month + 1, 1);
+            DateTime dateBegin = new DateTime(year, month, 1);
             return context.WeatherEntities.Where(x => x.Date >= dateBegin && x.Date < dateEnd);
         }
         public void SaveWeatherList(List<WeatherEntity> entity)
