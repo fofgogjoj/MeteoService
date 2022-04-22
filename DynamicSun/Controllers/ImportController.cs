@@ -33,26 +33,11 @@ namespace DynamicSun.Controllers
             List<WeatherEntity> weatherList = new List<WeatherEntity>();
             List<WeatherEntity> resultList = new List<WeatherEntity>();
             IQueryable<WeatherEntity> dublicateRows;
-            string path = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "\\Uploads";//изменить
             string message = string.Empty;
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-            List<string> uploadedFiles = new List<string>();
+
             foreach (IFormFile postedFile in fileExcel)
             {
-                string fileName = Path.GetFileName(postedFile.FileName);
-                using (FileStream stream = new FileStream(Path.Combine(path, fileName), FileMode.Create))
-                {
-                    postedFile.CopyTo(stream);
-                    uploadedFiles.Add(fileName);
-                }
-            }
-
-            foreach (string fileName in uploadedFiles)
-            {
-                weatherList.AddRange(GetExcelDataTable(Path.Combine(path, fileName)));
+                weatherList.AddRange(GetExcelDataTable(postedFile));
             }
 
 
@@ -83,18 +68,18 @@ namespace DynamicSun.Controllers
             WeatherEntity item = new WeatherEntity();
             try
             {
-                 item = new WeatherEntity(
-                        DateTime.Parse(datarow[0] + " " + datarow[1]),
-                        decimal.Parse(datarow[2].ToString()),
-                        decimal.Parse(datarow[3].ToString()),
-                        decimal.Parse(datarow[4].ToString()),
-                        datarow[5].ToString() == " " ? 0 : int.Parse(datarow[5].ToString()),
-                        datarow[6].ToString() == " " ? string.Empty : datarow[6].ToString(),
-                        datarow[7].ToString() == " " ? 0 : int.Parse(datarow[7].ToString()),
-                        datarow[8].ToString() == " " ? 0 : int.Parse(datarow[8].ToString()),
-                        datarow[9].ToString() == " " ? 0 : int.Parse(datarow[9].ToString()),
-                        datarow[10].ToString() == " " ? string.Empty : datarow[10].ToString(),
-                        datarow[11].ToString() == " " ? string.Empty : datarow[11].ToString());
+                item = new WeatherEntity(
+                       DateTime.Parse(datarow[0] + " " + datarow[1]),
+                       decimal.Parse(datarow[2].ToString()),
+                       decimal.Parse(datarow[3].ToString()),
+                       decimal.Parse(datarow[4].ToString()),
+                       datarow[5].ToString() == " " ? 0 : int.Parse(datarow[5].ToString()),
+                       datarow[6].ToString() == " " ? string.Empty : datarow[6].ToString(),
+                       datarow[7].ToString() == " " ? 0 : int.Parse(datarow[7].ToString()),
+                       datarow[8].ToString() == " " ? 0 : int.Parse(datarow[8].ToString()),
+                       datarow[9].ToString() == " " ? 0 : int.Parse(datarow[9].ToString()),
+                       datarow[10].ToString() == " " ? string.Empty : datarow[10].ToString(),
+                       datarow[11].ToString() == " " ? string.Empty : datarow[11].ToString());
             }
             catch (Exception ex)
             {
@@ -104,26 +89,14 @@ namespace DynamicSun.Controllers
 
         }
 
-        public static IWorkbook GetWorkBook(string filePath)
+        public static IWorkbook GetWorkBook(IFormFile formFile)
         {
-            IWorkbook Workbook;
+            IWorkbook Workbook = null;
             try
             {
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                using (var file = formFile.OpenReadStream())
                 {
-                    string fileExt = Path.GetExtension(filePath).ToLower();
-                    if (fileExt == ".xls")
-                    {
-                        Workbook = new HSSFWorkbook(fileStream);
-                    }
-                    else if (fileExt == ".xlsx")
-                    {
-                        Workbook = new XSSFWorkbook(fileStream);
-                    }
-                    else
-                    {
-                        Workbook = null;
-                    }
+                    Workbook = new XSSFWorkbook(file);
                 }
             }
             catch (Exception ex)
@@ -133,11 +106,11 @@ namespace DynamicSun.Controllers
             return Workbook;
         }
 
-        public static List<WeatherEntity> GetExcelDataTable(string filePath)
+        public static List<WeatherEntity> GetExcelDataTable(IFormFile formFile)
         {
             DataTable table = new DataTable();
             List<WeatherEntity> weather = new List<WeatherEntity>();
-            IWorkbook Workbook = GetWorkBook(filePath);
+            IWorkbook Workbook = GetWorkBook(formFile);
 
             if (Workbook == null)
                 return weather;
